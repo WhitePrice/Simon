@@ -111,60 +111,60 @@ public class Simon extends JFrame {
 		JButton btnStart = new JButton("START");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-					timer.scheduleAtFixedRate(new TimerTask() {
+					timer.schedule(new TimerTask() {
 						@Override
 						public void run() {
 							for (int i=0; i<level; i++) {
 								switch (seq_pc[i]) {
 									case 0: green.setBackground(Color.WHITE);
-											timer_color.scheduleAtFixedRate(new TimerTask() {
+											timer_color.schedule(new TimerTask() {
 												@Override
 												public void run() {
 													green.setBackground(Color.GREEN);													
 												}
-											},1000,1);
+											},1000);
 																						
 											break;
 									case 1: red.setBackground(Color.WHITE);
-											timer_color.scheduleAtFixedRate(new TimerTask() {
+											timer_color.schedule(new TimerTask() {
 												@Override
 												public void run() {
 													red.setBackground(Color.RED);													
 												}
-											},1000,1);
+											},1000);
 																						
 											break;
 									case 2: yellow.setBackground(Color.WHITE);
-											timer_color.scheduleAtFixedRate(new TimerTask() {
+											timer_color.schedule(new TimerTask() {
 												@Override
 												public void run() {
 													yellow.setBackground(Color.YELLOW);													
 												}
-											},1000,1);
+											},1000);
 											
 											break;
 									case 3: blu.setBackground(Color.WHITE);
-											timer_color.scheduleAtFixedRate(new TimerTask() {
+											timer_color.schedule(new TimerTask() {
 												@Override
 												public void run() {
 													blu.setBackground(Color.BLUE);													
 												}
-											},1000,1);
+											},1000);
 											
 											break;
 							}
 						}
 						timer.cancel();
-						timer_turn.scheduleAtFixedRate(new TimerTask() {
+						timer_turn.schedule(new TimerTask() {
 							@Override
 							public void run() {
 								turn.setText("It's your turn!");
 							}
-						}, 1500, 1);
+						}, 1500);
 						
 						turno=1;
 					}
-				},0,1000);
+				},0);
 				
 			}
 		});
@@ -186,12 +186,12 @@ public class Simon extends JFrame {
 					seq_gioc[i]=0;
 				}
 				green2.setBackground(Color.WHITE);
-				timer_color.scheduleAtFixedRate(new TimerTask() {
+				timer_color.schedule(new TimerTask() {
 					@Override
 					public void run() {
 						green2.setBackground(Color.GREEN);													
 					}
-				},1000,1);
+				},1000);
 			}
 		});
 		green2.setForeground(Color.RED);
@@ -206,12 +206,12 @@ public class Simon extends JFrame {
 					seq_gioc[i]=1;
 				}
 				red2.setBackground(Color.WHITE);
-				timer_color.scheduleAtFixedRate(new TimerTask() {
+				timer_color.schedule(new TimerTask() {
 					@Override
 					public void run() {
 						red2.setBackground(Color.RED);													
 					}
-				},1000,1);
+				},1000);
 			}
 		});
 		red2.setForeground(Color.RED);
@@ -226,12 +226,12 @@ public class Simon extends JFrame {
 					seq_gioc[i]=2;
 				}
 				yellow2.setBackground(Color.WHITE);
-				timer_color.scheduleAtFixedRate(new TimerTask() {
+				timer_color.schedule(new TimerTask() {
 					@Override
 					public void run() {
 						yellow2.setBackground(Color.YELLOW);													
 					}
-				},1000,1);
+				},1000);
 			}
 		});
 		yellow2.setForeground(Color.RED);
@@ -246,12 +246,12 @@ public class Simon extends JFrame {
 					seq_gioc[i]=3;
 				}
 				blu2.setBackground(Color.WHITE);
-				timer_color.scheduleAtFixedRate(new TimerTask() {
+				timer_color.schedule(new TimerTask() {
 					@Override
 					public void run() {
 						blu2.setBackground(Color.BLUE);													
 					}
-				},1000,1);
+				},1000);
 			}
 		});
 		blu2.setForeground(Color.RED);
