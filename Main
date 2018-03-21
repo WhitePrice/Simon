@@ -182,16 +182,19 @@ public class Simon extends JFrame {
 		JButton green2 = new JButton("");
 		green2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				for (int i=0;i<level;i++) {
-					seq_gioc[i]=0;
-				}
-				green2.setBackground(Color.WHITE);
-				timer_color.schedule(new TimerTask() {
-					@Override
-					public void run() {
-						green2.setBackground(Color.GREEN);													
+				if(turno==1) {
+					for (int i=0;i<level;i++) {
+						seq_gioc[i]=0;
 					}
-				},1000);
+					green2.setBackground(Color.WHITE);
+					timer_color.schedule(new TimerTask() {
+						@Override
+						public void run() {
+							green2.setBackground(Color.GREEN);													
+						}
+					},1000);
+				}
+				
 			}
 		});
 		green2.setForeground(Color.RED);
@@ -202,16 +205,19 @@ public class Simon extends JFrame {
 		JButton red2 = new JButton("");
 		red2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				for(int i=0; i<level; i++) {
-					seq_gioc[i]=1;
-				}
-				red2.setBackground(Color.WHITE);
-				timer_color.schedule(new TimerTask() {
-					@Override
-					public void run() {
-						red2.setBackground(Color.RED);													
+				if(turno==1) {
+					for(int i=0; i<level; i++) {
+						seq_gioc[i]=1;
 					}
-				},1000);
+					red2.setBackground(Color.WHITE);
+					timer_color.schedule(new TimerTask() {
+						@Override
+						public void run() {
+							red2.setBackground(Color.RED);													
+						}
+					},1000);
+				}
+				
 			}
 		});
 		red2.setForeground(Color.RED);
@@ -222,16 +228,19 @@ public class Simon extends JFrame {
 		JButton yellow2 = new JButton("");
 		yellow2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				for(int i=0; i<level; i++) {
-					seq_gioc[i]=2;
-				}
-				yellow2.setBackground(Color.WHITE);
-				timer_color.schedule(new TimerTask() {
-					@Override
-					public void run() {
-						yellow2.setBackground(Color.YELLOW);													
+				if(turno==1) {
+					for(int i=0; i<level; i++) {
+						seq_gioc[i]=2;
 					}
-				},1000);
+					yellow2.setBackground(Color.WHITE);
+					timer_color.schedule(new TimerTask() {
+						@Override
+						public void run() {
+							yellow2.setBackground(Color.YELLOW);													
+						}
+					},1000);
+				}
+				
 			}
 		});
 		yellow2.setForeground(Color.RED);
@@ -242,16 +251,19 @@ public class Simon extends JFrame {
 		JButton blu2 = new JButton("");
 		blu2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				for(int i=0; i<level; i++) {
-					seq_gioc[i]=3;
-				}
-				blu2.setBackground(Color.WHITE);
-				timer_color.schedule(new TimerTask() {
-					@Override
-					public void run() {
-						blu2.setBackground(Color.BLUE);													
+				if(turno==1) {
+					for(int i=0; i<level; i++) {
+						seq_gioc[i]=3;
 					}
-				},1000);
+					blu2.setBackground(Color.WHITE);
+					timer_color.schedule(new TimerTask() {
+						@Override
+						public void run() {
+							blu2.setBackground(Color.BLUE);													
+						}
+					},1000);
+				}
+				
 			}
 		});
 		blu2.setForeground(Color.RED);
@@ -278,6 +290,8 @@ public class Simon extends JFrame {
 				for(int i=0; i<level; i++) {
 					if(seq_pc[i]!=seq_gioc[i])
 						turn.setText("Wrong!");
+					else
+						turn.setText("Right!");
 				}
 			}
 		});
