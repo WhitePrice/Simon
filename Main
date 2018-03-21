@@ -60,7 +60,7 @@ public class Simon extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {				// START
-				for (int i=0; i<DIM; i++) {
+				for (int i=0; i<DIM; i++) {							// popolo sequenza colori pc
 					casual=rand.nextInt(4);
 					seq_pc[i]=casual;
 				}
@@ -115,10 +115,12 @@ public class Simon extends JFrame {
 		JButton btnStart = new JButton("START");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				turn.setText("Level "+level);
 					timer.schedule(new TimerTask() {
 						@Override
 						public void run() {
-							for (int i=0; i<level; i++) {
+							for (int i=0; i<level; i++) {								// stampo la sequenza del pc fino al livello
 								switch (seq_pc[i]) {
 									case 0: green.setBackground(Color.WHITE);
 											timer_color.schedule(new TimerTask() {
@@ -159,14 +161,14 @@ public class Simon extends JFrame {
 							}
 						}
 						timer.purge();
-						timer_turn.schedule(new TimerTask() {
+						timer_turn.schedule(new TimerTask() {					//stampo quando finisce il pc
 							@Override
 							public void run() {
 								turn.setText("It's your turn!");
 							}
 						}, 1500);
 						
-						turno=1;
+						turno=1;												// TURNO=1 --> giocatore
 					}
 				},0);
 				
@@ -187,8 +189,8 @@ public class Simon extends JFrame {
 		green2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(turno==1) {
-					for (int i=0;i<level;i++) {
-						seq_gioc[i]=0;
+					for (int i=0;i<level;i++) {						// setto a 0 quella posizione se cliccata dal gioatore
+						seq_gioc[i]=0;								// 0=VERDE
 					}
 					green2.setBackground(Color.WHITE);
 					timer_color.schedule(new TimerTask() {
@@ -211,7 +213,7 @@ public class Simon extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(turno==1) {
 					for(int i=0; i<level; i++) {
-						seq_gioc[i]=1;
+						seq_gioc[i]=1;									// 1=ROSSO
 					}
 					red2.setBackground(Color.WHITE);
 					timer_color.schedule(new TimerTask() {
@@ -234,7 +236,7 @@ public class Simon extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(turno==1) {
 					for(int i=0; i<level; i++) {
-						seq_gioc[i]=2;
+						seq_gioc[i]=2;									//2=GIALLO
 					}
 					yellow2.setBackground(Color.WHITE);
 					timer_color.schedule(new TimerTask() {
@@ -257,7 +259,7 @@ public class Simon extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(turno==1) {
 					for(int i=0; i<level; i++) {
-						seq_gioc[i]=3;
+						seq_gioc[i]=3;									// 3=BLU
 					}
 					blu2.setBackground(Color.WHITE);
 					timer_color.schedule(new TimerTask() {
@@ -292,10 +294,13 @@ public class Simon extends JFrame {
 				String x = "";
 				turn.setText(x);
 				for(int i=0; i<level; i++) {
-					if(seq_pc[i]!=seq_gioc[i])
+					if(seq_pc[i]!=seq_gioc[i])						// confronto sequenza pc e sequenza giocatore
 						turn.setText("Wrong!");
 					else
 						turn.setText("Right!");
+				}
+				for(int i=0; i<DIM;i++) {								// azzero sequenza giocatore
+					seq_gioc[i]=0;
 				}
 			}
 		});
@@ -306,6 +311,7 @@ public class Simon extends JFrame {
 		goon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				level++;
+				turn.setText("Level "+level);
 				timer.schedule(new TimerTask() {
 					@Override
 					public void run() {
@@ -348,7 +354,6 @@ public class Simon extends JFrame {
 											
 											break;
 									}
-								
 							}
 						}
 				}, 1000);
