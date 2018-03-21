@@ -27,9 +27,10 @@ public class Simon extends JFrame {
 	private int [] seq_pc = new int[DIM];		// sequenza colori estratta pc
 	private int [] seq_gioc = new int[DIM];		// sequenza colori selezionati dal giocatore
 	
-	Timer timer = new Timer();
-	Timer timer_color = new Timer();
+	Timer timer = new Timer();			//timer per il bottone START
+	Timer timer_color = new Timer();		//timer per l'evidenziazzione dei colori
 	Timer timer_turn = new Timer();			//timer scritta "It's your turn!"
+	Timer timer_goon = new Timer();			//timer per il bottone GO ON
 	private JTextField turn;
 	private JTextField title2;
 
@@ -297,5 +298,63 @@ public class Simon extends JFrame {
 		});
 		done.setBounds(591, 234, 89, 23);
 		contentPane.add(done);
+		JButton goon = new JButton("GO ON!");
+		goon.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				level++;
+				timer.schedule(new TimerTask(){
+					@Override
+					public void run(){
+						for(int i=0;i<level;i++){
+							timer_goon.schedule(new TimerTask{
+								@Override
+								public void run(){
+									switch (seq_pc[i]) {
+									case 0: green.setBackground(Color.WHITE);
+											timer_color.schedule(new TimerTask() {
+												@Override
+												public void run() {
+													green.setBackground(Color.GREEN);													
+												}
+											},1000);
+																						
+											break;
+									case 1: red.setBackground(Color.WHITE);
+											timer_color.schedule(new TimerTask() {
+												@Override
+												public void run() {
+													red.setBackground(Color.RED);													
+												}
+											},1000);
+																						
+											break;
+									case 2: yellow.setBackground(Color.WHITE);
+											timer_color.schedule(new TimerTask() {
+												@Override
+												public void run() {
+													yellow.setBackground(Color.YELLOW);													
+												}
+											},1000);
+											
+											break;
+									case 3: blu.setBackground(Color.WHITE);
+											timer_color.schedule(new TimerTask() {
+												@Override
+												public void run() {
+													blu.setBackground(Color.BLUE);													
+												}
+											},1000);
+											
+											break;
+									}
+								}
+							},1000);
+						}
+					}
+				},1500)
+			
+			}
+		
+		});
 	}
 }
