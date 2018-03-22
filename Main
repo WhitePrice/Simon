@@ -19,347 +19,351 @@ import java.awt.event.WindowEvent;
 
 public class Simon extends JFrame {
 
-	private JPanel contentPane;
-	private JTextField title;
-	private Random rand= new Random();
-	private static final int DIM=50;
-	private int casual;						// estrazione scelta colore da selezionare
-	private static int level=1;				// livello difficoltà
-	private int turno=0;					//0=turno pc 1=turno giocatore
-	private int [] seq_pc = new int[DIM];		// sequenza colori estratta pc
-	private int [] seq_gioc = new int[DIM];		// sequenza colori selezionati dal giocatore
-	
-	
-	Timer timer = new Timer();
-	Timer timer_color = new Timer();
-	Timer timer_turn = new Timer();			//timer scritta "It's your turn!"
-	Timer timer_goon = new Timer();			// timer button go on
-	private JTextField turn;
-	private JTextField title2;
+    private JPanel contentPane;
+    private JTextField title;
+    private Random rand= new Random();
+    private static final int DIM=50;
+    private int casual;						// estrazione scelta colore da selezionare
+    private static int level=1;				// livello difficoltà
+    private int turno=0;					//0=turno pc 1=turno giocatore
+    private int [] seq_pc = new int[DIM];		// sequenza colori estratta pc
+    private int [] seq_gioc = new int[DIM];		// sequenza colori selezionati dal giocatore
+    private int cont;
+    Timer timer = new Timer();
+    Timer timer_color = new Timer();
+    Timer timer_turn = new Timer();			//timer scritta "It's your turn!"
+    Timer timer_goon = new Timer();			// timer button go on
+    private JTextField turn;
+    private JTextField title2;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Simon frame = new Simon();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    Simon frame = new Simon();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Create the frame.
-	 */
-	public Simon() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowOpened(WindowEvent e) {				// START
-				for (int i=0; i<DIM; i++) {							// popolo sequenza colori pc
-					casual=rand.nextInt(4);
-					seq_pc[i]=casual;
-				}
-			}
-		});
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 873, 510);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
-		JButton red = new JButton("");
-		red.setForeground(Color.RED);
-		red.setEnabled(false);
-		red.setBackground(Color.RED);
-		red.setBounds(198, 59, 127, 66);
-		contentPane.add(red);
-		
-		JButton green = new JButton("");
-		green.setForeground(Color.RED);
-		green.setEnabled(false);
-		green.setBackground(Color.GREEN);
-		green.setBounds(70, 59, 127, 66);
-		contentPane.add(green);
-		
-		JButton yellow = new JButton("");
-		yellow.setForeground(Color.RED);
-		yellow.setEnabled(false);
-		yellow.setBackground(Color.YELLOW);
-		yellow.setBounds(70, 155, 127, 66);
-		contentPane.add(yellow);
-		
-		JButton blu = new JButton("");
-		blu.setForeground(Color.RED);
-		blu.setEnabled(false);
-		blu.setBackground(Color.BLUE);
-		blu.setBounds(198, 155, 127, 66);
-		contentPane.add(blu);
-		
-		title = new JTextField();
-		title.setFont(new Font("Courier New", Font.BOLD, 16));
-		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setForeground(new Color(255, 0, 255));
-		title.setToolTipText("");
-		title.setText("SIMON");
-		title.setEditable(false);
-		title.setBounds(70, 124, 255, 32);
-		contentPane.add(title);
-		title.setColumns(10);
-		
-		JButton btnStart = new JButton("START");
-		btnStart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				turn.setText("Level "+level);
-					timer.schedule(new TimerTask() {
-						@Override
-						public void run() {
-							for (int i=0; i<level; i++) {								// stampo la sequenza del pc fino al livello
-								switch (seq_pc[i]) {
-									case 0: green.setBackground(Color.WHITE);
-											timer_color.schedule(new TimerTask() {
-												@Override
-												public void run() {
-													green.setBackground(Color.GREEN);													
-												}
-											},1000);
-																						
-											break;
-									case 1: red.setBackground(Color.WHITE);
-											timer_color.schedule(new TimerTask() {
-												@Override
-												public void run() {
-													red.setBackground(Color.RED);													
-												}
-											},1000);
-																						
-											break;
-									case 2: yellow.setBackground(Color.WHITE);
-											timer_color.schedule(new TimerTask() {
-												@Override
-												public void run() {
-													yellow.setBackground(Color.YELLOW);													
-												}
-											},1000);
-											
-											break;
-									case 3: blu.setBackground(Color.WHITE);
-											timer_color.schedule(new TimerTask() {
-												@Override
-												public void run() {
-													blu.setBackground(Color.BLUE);													
-												}
-											},1000);
-											
-											break;
-							}
-						}
-						timer.purge();
-						timer_turn.schedule(new TimerTask() {					//stampo quando finisce il pc
-							@Override
-							public void run() {
-								turn.setText("It's your turn!");
-							}
-						}, 1500);
-						
-						turno=1;												// TURNO=1 --> giocatore
-					}
-				},0);
-				
-			}
-		});
-		btnStart.setBounds(23, 11, 89, 23);
-		contentPane.add(btnStart);
-		
-		turn = new JTextField();
-		turn.setHorizontalAlignment(SwingConstants.CENTER);
-		turn.setForeground(Color.RED);
-		turn.setEditable(false);
-		turn.setBounds(198, 277, 355, 32);
-		contentPane.add(turn);
-		turn.setColumns(10);
-		
-		JButton green2 = new JButton("");
-		green2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(turno==1) {
-					for (int i=0;i<level;i++) {						// setto a 0 quella posizione se cliccata dal gioatore
-						seq_gioc[i]=0;								// 0=VERDE
-					}
-					green2.setBackground(Color.WHITE);
-					timer_color.schedule(new TimerTask() {
-						@Override
-						public void run() {
-							green2.setBackground(Color.GREEN);													
-						}
-					},1000);
-				}
-				
-			}
-		});
-		green2.setForeground(Color.RED);
-		green2.setBackground(Color.GREEN);
-		green2.setBounds(426, 59, 127, 66);
-		contentPane.add(green2);
-		
-		JButton red2 = new JButton("");
-		red2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(turno==1) {
-					for(int i=0; i<level; i++) {
-						seq_gioc[i]=1;									// 1=ROSSO
-					}
-					red2.setBackground(Color.WHITE);
-					timer_color.schedule(new TimerTask() {
-						@Override
-						public void run() {
-							red2.setBackground(Color.RED);													
-						}
-					},1000);
-				}
-				
-			}
-		});
-		red2.setForeground(Color.RED);
-		red2.setBackground(Color.RED);
-		red2.setBounds(553, 59, 127, 66);
-		contentPane.add(red2);
-		
-		JButton yellow2 = new JButton("");
-		yellow2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(turno==1) {
-					for(int i=0; i<level; i++) {
-						seq_gioc[i]=2;									//2=GIALLO
-					}
-					yellow2.setBackground(Color.WHITE);
-					timer_color.schedule(new TimerTask() {
-						@Override
-						public void run() {
-							yellow2.setBackground(Color.YELLOW);													
-						}
-					},1000);
-				}
-				
-			}
-		});
-		yellow2.setForeground(Color.RED);
-		yellow2.setBackground(Color.YELLOW);
-		yellow2.setBounds(426, 155, 127, 66);
-		contentPane.add(yellow2);
-		
-		JButton blu2 = new JButton("");
-		blu2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(turno==1) {
-					for(int i=0; i<level; i++) {
-						seq_gioc[i]=3;									// 3=BLU
-					}
-					blu2.setBackground(Color.WHITE);
-					timer_color.schedule(new TimerTask() {
-						@Override
-						public void run() {
-							blu2.setBackground(Color.BLUE);													
-						}
-					},1000);
-				}
-				
-			}
-		});
-		blu2.setForeground(Color.RED);
-		blu2.setBackground(Color.BLUE);
-		blu2.setBounds(553, 155, 127, 66);
-		contentPane.add(blu2);
-		
-		title2 = new JTextField();
-		title2.setToolTipText("");
-		title2.setText("PLAYER");
-		title2.setHorizontalAlignment(SwingConstants.CENTER);
-		title2.setForeground(Color.MAGENTA);
-		title2.setFont(new Font("Courier New", Font.BOLD, 16));
-		title2.setEditable(false);
-		title2.setColumns(10);
-		title2.setBounds(425, 124, 255, 32);
-		contentPane.add(title2);
-		
-		JButton done = new JButton("DONE");
-		done.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String x = "";
-				turn.setText(x);
-				for(int i=0; i<level; i++) {
-					if(seq_pc[i]!=seq_gioc[i])						// confronto sequenza pc e sequenza giocatore
-						turn.setText("Wrong!");
-					else
-						turn.setText("Right!");
-				}
-				for(int i=0; i<DIM;i++) {								// azzero sequenza giocatore
-					seq_gioc[i]=0;
-				}
-			}
-		});
-		done.setBounds(591, 234, 89, 23);
-		contentPane.add(done);
-		
-		JButton goon = new JButton("GO ON!");
-		goon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				level++;
-				turn.setText("Level "+level);
-				timer.schedule(new TimerTask() {
-					@Override
-					public void run() {
-						for(int i=0;i<level;i++) {
-									switch(seq_pc[i]) {
-									case 0: green.setBackground(Color.WHITE);
-											timer_color.schedule(new TimerTask() {
-												@Override
-												public void run() {
-													green.setBackground(Color.GREEN);													
-												}
-											},1000);
-																						
-											break;
-									case 1: red.setBackground(Color.WHITE);
-											timer_color.schedule(new TimerTask() {
-												@Override
-												public void run() {
-													red.setBackground(Color.RED);													
-												}
-											},1000);
-																						
-											break;
-									case 2: yellow.setBackground(Color.WHITE);
-											timer_color.schedule(new TimerTask() {
-												@Override
-												public void run() {
-													yellow.setBackground(Color.YELLOW);													
-												}
-											},1000);
-											
-											break;
-									case 3: blu.setBackground(Color.WHITE);
-											timer_color.schedule(new TimerTask() {
-												@Override
-												public void run() {
-													blu.setBackground(Color.BLUE);													
-												}
-											},1000);
-											
-											break;
-									}
-							}
-						}
-				}, 1000);
-			}
-		});
-		goon.setBounds(503, 322, 97, 25);
-		contentPane.add(goon);
-	}
+    /**
+     * Create the frame.
+     */
+    public Simon() {
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {				// START
+                for (int i=0; i<DIM; i++) {							// popolo sequenza colori pc
+                    casual=rand.nextInt(4);
+                    seq_pc[i]=casual;
+                }
+            }
+        });
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 873, 510);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        JButton red = new JButton("");
+        red.setForeground(Color.RED);
+        red.setEnabled(false);
+        red.setBackground(Color.RED);
+        red.setBounds(198, 59, 127, 66);
+        contentPane.add(red);
+
+        JButton green = new JButton("");
+        green.setForeground(Color.RED);
+        green.setEnabled(false);
+        green.setBackground(Color.GREEN);
+        green.setBounds(70, 59, 127, 66);
+        contentPane.add(green);
+
+        JButton yellow = new JButton("");
+        yellow.setForeground(Color.RED);
+        yellow.setEnabled(false);
+        yellow.setBackground(Color.YELLOW);
+        yellow.setBounds(70, 155, 127, 66);
+        contentPane.add(yellow);
+
+        JButton blu = new JButton("");
+        blu.setForeground(Color.RED);
+        blu.setEnabled(false);
+        blu.setBackground(Color.BLUE);
+        blu.setBounds(198, 155, 127, 66);
+        contentPane.add(blu);
+
+        title = new JTextField();
+        title.setFont(new Font("Courier New", Font.BOLD, 16));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setForeground(new Color(255, 0, 255));
+        title.setToolTipText("");
+        title.setText("SIMON");
+        title.setEditable(false);
+        title.setBounds(70, 124, 255, 32);
+        contentPane.add(title);
+        title.setColumns(10);
+
+        JButton btnStart = new JButton("START");
+        btnStart.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+
+                turn.setText("Level "+level);
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        for (int i=0; i<level; i++) {								// stampo la sequenza del pc fino al livello
+                            switch (seq_pc[i]) {
+                                case 0: green.setBackground(Color.WHITE);
+                                    timer_color.schedule(new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            green.setBackground(Color.GREEN);
+                                        }
+                                    },1000);
+
+                                    break;
+                                case 1: red.setBackground(Color.WHITE);
+                                    timer_color.schedule(new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            red.setBackground(Color.RED);
+                                        }
+                                    },1000);
+
+                                    break;
+                                case 2: yellow.setBackground(Color.WHITE);
+                                    timer_color.schedule(new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            yellow.setBackground(Color.YELLOW);
+                                        }
+                                    },1000);
+
+                                    break;
+                                case 3: blu.setBackground(Color.WHITE);
+                                    timer_color.schedule(new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            blu.setBackground(Color.BLUE);
+                                        }
+                                    },1000);
+
+                                    break;
+                            }
+                        }
+                        timer.purge();
+                        timer_turn.schedule(new TimerTask() {					//stampo quando finisce il pc
+                            @Override
+                            public void run() {
+                                turn.setText("It's your turn!");
+                            }
+                        }, 1500);
+
+                        turno=1;												// TURNO=1 --> giocatore
+                    }
+                },0);
+
+            }
+        });
+        btnStart.setBounds(23, 11, 89, 23);
+        contentPane.add(btnStart);
+
+        turn = new JTextField();
+        turn.setHorizontalAlignment(SwingConstants.CENTER);
+        turn.setForeground(Color.RED);
+        turn.setEditable(false);
+        turn.setBounds(198, 277, 355, 32);
+        contentPane.add(turn);
+        turn.setColumns(10);
+
+        JButton green2 = new JButton("");
+        green2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(turno==1) {
+                    for (int i=0;i<level;i++) {						// setto a 0 quella posizione se cliccata dal gioatore
+                        seq_gioc[i]=0;								// 0=VERDE
+                    }
+                    green2.setBackground(Color.WHITE);
+                    timer_color.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            green2.setBackground(Color.GREEN);
+                        }
+                    },1000);
+                }
+
+            }
+        });
+        green2.setForeground(Color.RED);
+        green2.setBackground(Color.GREEN);
+        green2.setBounds(426, 59, 127, 66);
+        contentPane.add(green2);
+
+        JButton red2 = new JButton("");
+        red2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(turno==1) {
+                    for(int i=0; i<level; i++) {
+                        seq_gioc[i]=1;									// 1=ROSSO
+                    }
+                    red2.setBackground(Color.WHITE);
+                    timer_color.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            red2.setBackground(Color.RED);
+                        }
+                    },1000);
+                }
+
+            }
+        });
+        red2.setForeground(Color.RED);
+        red2.setBackground(Color.RED);
+        red2.setBounds(553, 59, 127, 66);
+        contentPane.add(red2);
+
+        JButton yellow2 = new JButton("");
+        yellow2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(turno==1) {
+                    for(int i=0; i<level; i++) {
+                        seq_gioc[i]=2;									//2=GIALLO
+                    }
+                    yellow2.setBackground(Color.WHITE);
+                    timer_color.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            yellow2.setBackground(Color.YELLOW);
+                        }
+                    },1000);
+                }
+
+            }
+        });
+        yellow2.setForeground(Color.RED);
+        yellow2.setBackground(Color.YELLOW);
+        yellow2.setBounds(426, 155, 127, 66);
+        contentPane.add(yellow2);
+
+        JButton blu2 = new JButton("");
+        blu2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(turno==1) {
+                    for(int i=0; i<level; i++) {
+                        seq_gioc[i]=3;									// 3=BLU
+                    }
+                    blu2.setBackground(Color.WHITE);
+                    timer_color.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            blu2.setBackground(Color.BLUE);
+                        }
+                    },1000);
+                }
+
+            }
+        });
+        blu2.setForeground(Color.RED);
+        blu2.setBackground(Color.BLUE);
+        blu2.setBounds(553, 155, 127, 66);
+        contentPane.add(blu2);
+
+        title2 = new JTextField();
+        title2.setToolTipText("");
+        title2.setText("PLAYER");
+        title2.setHorizontalAlignment(SwingConstants.CENTER);
+        title2.setForeground(Color.MAGENTA);
+        title2.setFont(new Font("Courier New", Font.BOLD, 16));
+        title2.setEditable(false);
+        title2.setColumns(10);
+        title2.setBounds(425, 124, 255, 32);
+        contentPane.add(title2);
+
+        JButton done = new JButton("DONE");
+        done.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                turno=0;
+                String x = "";
+                turn.setText(x);
+                for(int i=0; i<level; i++) {
+                    if(seq_pc[i]!=seq_gioc[i])        // confronto sequenza pc e sequenza giocatore
+                        turn.setText("Wrong! Try Again.");
+                    else
+                        turn.setText("Right!");
+                }
+                for(int i=0; i<DIM;i++) {								// azzero sequenza giocatore
+                    seq_gioc[i]=-1;
+                }
+            }
+        });
+        done.setBounds(591, 234, 89, 23);
+        contentPane.add(done);
+
+        JButton goon = new JButton("GO ON!");
+        goon.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                level++;
+                turn.setText("Level "+level);
+                for(cont=0;cont<level;cont++) {
+                    switch(seq_pc[cont]) {
+                        case 0: green.setBackground(Color.WHITE);
+                            timer_color.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    green.setBackground(Color.GREEN);
+                                }
+                            },1000);
+
+                            break;
+                        case 1: red.setBackground(Color.WHITE);
+                            timer_color.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    red.setBackground(Color.RED);
+                                }
+                            },1000);
+                             break;
+                        case 2: yellow.setBackground(Color.WHITE);
+                            timer_color.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    yellow.setBackground(Color.YELLOW);
+                                }
+                            },1000);
+
+                            break;
+                        case 3: blu.setBackground(Color.WHITE);
+                            timer_color.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    blu.setBackground(Color.BLUE);
+                                }
+                                           },1000);
+
+                            break;
+                    }
+
+                }
+                timer_goon.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        turn.setText("It's your turn!");
+                        turno=1;
+                    }
+                },(level+1)*1000);
+
+            }
+        });
+        goon.setBounds(503, 322, 97, 25);
+        contentPane.add(goon);
+    }
+
 }
